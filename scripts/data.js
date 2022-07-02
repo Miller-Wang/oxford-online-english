@@ -316,12 +316,30 @@ const lessons = {
 };
 
 const host = 'https://www.oxfordonlineenglish.com/';
-
+const pdfPath = 'https://github.com/Miller-Wang/oxford-online-english/tree/main/assets/';
 const results = [`# [OxfordOnlineEnglish free lessons](https://www.oxfordonlineenglish.com/free-english-lessons)`];
 
 Object.entries(lessons).map(([title, obj]) => {
+
+  let pdfFiles = [];
+  try {
+    pdfFiles = fs.readdirSync(path.resolve(__dirname, `../assets/Vocabulary`));
+  } catch (error) {
+    console.log(error);
+  }
+
+
   results.push(`## [${title}](${obj.url})`);
-  const subLessons = obj.lessons.map((url) => `### [${url.replace(host, '')}](${url})`);
+  const subLessons = obj.lessons.map((url) => {
+    const name = url.replace(host, '').replace(/-/g, ' ');
+    const pdfName = pdfFiles.find(v => v.toLowerCase().startsWith(name));
+    let str = `#### [${name}](${url})`;
+    
+    if (pdfName) {
+      str += ` - [pdf](${encodeURI(`${pdfPath}/${title}/${pdfName}`)})`;
+    }
+    return str;
+  });
   results.push(...subLessons);
 });
 
