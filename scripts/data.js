@@ -332,7 +332,7 @@ Object.entries(lessons).map(([title, obj]) => {
   results.push(`## [${title}](${obj.url})`);
   const subLessons = obj.lessons.map((url) => {
     const name = url.replace(host, '').replace(/-/g, ' ');
-    const pdfName = pdfFiles.find(v => v.toLowerCase().startsWith(name));
+    const pdfName = pdfFiles.find(v => v.toLowerCase().includes(name));
     let str = `#### [${name}](${url})`;
     
     if (pdfName) {
@@ -343,4 +343,4 @@ Object.entries(lessons).map(([title, obj]) => {
   results.push(...subLessons);
 });
 
-fs.writeFileSync('./README.md', results.join('\n'));
+// fs.writeFileSync('./README.md', results.join('\n'));
